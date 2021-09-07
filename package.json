@@ -1,0 +1,14 @@
+{
+  "name": "com.mrstruijk.save_system",
+  "version": "0.0.1-preview.1",
+  "displayName": "Save System",
+  "description": "This is an implementation of GameDevGuide's Save System",
+  "documentationUrl": "https://youtu.be/5roZtuqZyuw",
+  "unity": "2021.1",
+  "author":
+  {
+    "name": "Maarten R. Struijk Wilbrink",
+    "email": "m.r.struijk@fsw.leidenuniv.nl",
+    "url": "https://youtu.be/5roZtuqZyuw"
+  }
+}
