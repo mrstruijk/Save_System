@@ -14,10 +14,10 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		public TMP_InputField saveNameInput;
 		public GameObject loadButtonPrefab;
 		public Transform loadArea;
-		private ObjectsToLoadManager objectsToLoadManager;
 		public List<string> saveFiles;
 
-
+		private ObjectsToLoadManager objectsToLoadManager;
+		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
 
 		private void Awake()
@@ -42,8 +42,12 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				handler.SavePositionAndRotation();
 			}
 
-			SerializationManager.Save(saveNameInput.text, SaveData.current);
-			Debug.Log("Saved");
+			var success = SerializationManager.Save(saveNameInput.text, SaveData.current);
+
+			if (!success)
+			{
+				Debug.LogError("Saving was not succesfull!");
+			}
 		}
 
 
@@ -55,8 +59,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
 			}
 
-			string[] ext = {".meta", ".DS_Store"};
-			var files = Directory.GetFiles(SerializationManager.saveDir).Where(file => !ext.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+			var files = Directory.GetFiles(SerializationManager.saveDir).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
 
 			foreach (var file in files)
 			{
@@ -71,18 +74,17 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 			for (int i = 0; i < saveFiles.Count; i++)
 			{
-				var buttonObject = Instantiate(loadButtonPrefab);
-				buttonObject.transform.SetParent(loadArea.transform, false);
+				var button = Instantiate(loadButtonPrefab, loadArea.transform, false);
 
 				var index = i;
 
-				buttonObject.GetComponent<Button>().onClick.AddListener(() =>
+				button.GetComponent<Button>().onClick.AddListener(() =>
 				{
 					objectsToLoadManager.OnLoad(saveFiles[index]);
 				});
 
-				// buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(".save", "");
-				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "");
+				var buttonText = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(SerializationManager.saveExtention, "");
+				button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
 			}
 		}
 	}

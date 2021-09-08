@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -21,12 +19,12 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 			for (int i = 0; i < SaveData.current.objectsData.Count; i++)
 			{
-				var currentToy = SaveData.current.objectsData[i];
+				var currentObject = SaveData.current.objectsData[i];
 
 				GameObject obj = null;
 				foreach (var prefab in prefabs)
 				{
-					if (prefab.GetComponent<ObjectHandler>().objectData.objectType == currentToy.objectType)
+					if (prefab.GetComponent<ObjectHandler>().objectData.objectType == currentObject.objectType)
 					{
 						obj = Instantiate(prefab);
 						break;
@@ -35,17 +33,16 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 				if (obj == null)
 				{
-					Debug.LogError("Could not locate: " + currentToy.objectType + " in list");
+					Debug.LogError("Could not locate: " + currentObject.objectType + " in list");
 					return;
 				}
 
-				Debug.Log(obj.name);
+				var handler = obj.GetComponent<ObjectHandler>();
+				handler.objectData = currentObject;
 
-				var objectHandler = obj.GetComponent<ObjectHandler>();
-				objectHandler.objectData = currentToy;
-
-				objectHandler.transform.position = currentToy.position;
-				objectHandler.transform.rotation = currentToy.rotation;
+				var handlerTransform = handler.transform;
+				handlerTransform.position = currentObject.position;
+				handlerTransform.rotation = currentObject.rotation;
 			}
 		}
 

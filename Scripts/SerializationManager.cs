@@ -13,11 +13,8 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	/// </summary>
 	public class SerializationManager
 	{
-		// public static Action onLoadEvent;
-
-		public static string saveDir = Application.persistentDataPath + "/saves/";
-
-
+		public static readonly string saveDir = Application.persistentDataPath + "/saves/";
+		public static readonly string saveExtention = ".save";
 
 		public static bool Save(string saveName, object saveData)
 		{
@@ -28,7 +25,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				Directory.CreateDirectory(saveDir);
 			}
 
-			string path = saveDir + saveName + ".save";
+			string path = saveDir + saveName + saveExtention;
 
 			var file = File.Create(path);
 
@@ -40,17 +37,17 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		}
 
 
-		public static object Load(string path)
+		public static object Load(string fileName)
 		{
-			if (!File.Exists(path))
+			if (!File.Exists(fileName))
 			{
-				Debug.LogErrorFormat("File at path: {0} does not exist!", path);
+				Debug.LogErrorFormat("File at path: {0} does not exist!", fileName);
 				return null;
 			}
 
 			var formatter = GetBinaryFormatter();
 
-			var file = File.Open(path, FileMode.Open);
+			var file = File.Open(fileName, FileMode.Open);
 
 			try
 			{
@@ -60,7 +57,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			}
 			catch
 			{
-				Debug.LogErrorFormat("Failed to load file {0}", path);
+				Debug.LogErrorFormat("Failed to load file {0}", fileName);
 				file.Close();
 				return null;
 			}

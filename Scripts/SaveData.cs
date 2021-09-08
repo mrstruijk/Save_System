@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 
 namespace _mrstruijk.Components.SaveSystem.Scripts
@@ -16,27 +15,16 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		public static SaveData current
 		{
-			get
-			{
-				if (_current == null)
-				{
-					_current = new SaveData();
-				}
-
-				return _current;
-			}
-			set
-			{
-				_current = value;
-			}
+			get => _current ??= new SaveData();
+			set => _current = value;
 		}
 
 		public List<ObjectData> objectsData = new List<ObjectData>();
 
 
-		public void AddToObjectList(ObjectData objectsData)
+		public void AddToObjectList(ObjectData objectData)
 		{
-			this.objectsData.Add(objectsData);
+			objectsData.Add(objectData);
 		}
 	}
 }
