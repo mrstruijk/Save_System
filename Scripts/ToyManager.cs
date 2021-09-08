@@ -11,19 +11,19 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		public List<GameObject> toys;
 
 
-		public void OnSave(string saveName)
+		public void OnSave(string saveFile)
 		{
-			SerializationManager.Save(saveName, SaveData.current);
+			SerializationManager.Save(saveFile, SaveData.current);
 		}
 
 
-		public void OnLoad(string saveName)
+		public void OnLoad(string saveFile)
 		{
 			Debug.Log("Loading object");
 
 			GameEvents.current.onLoadEvent?.Invoke();
 
-			SaveData.current = (SaveData) SerializationManager.Load(saveName);
+			SaveData.current = (SaveData) SerializationManager.Load(Application.persistentDataPath + "/saves/" + saveFile + ".save");
 
 			for (int i = 0; i < SaveData.current.toys.Count; i++)
 			{

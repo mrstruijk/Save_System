@@ -18,12 +18,9 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	{
 		// public static Action onLoadEvent;
 
+		public static string saveDir = Application.persistentDataPath + "/saves/";
 
-		public static string saveDir = Application.dataPath + "/_mrstruijk/Components/_Packages/Save_System/saves/";
-		public static string saveName;
-		public static string saveExtension = ".save";
 
-		private static string fullPath;
 
 		public static bool Save(string saveName, object saveData)
 		{
@@ -32,12 +29,11 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			if (!Directory.Exists(saveDir))
 			{
 				Directory.CreateDirectory(saveDir);
-
 			}
 
-			fullPath = saveDir + saveName + saveExtension;
+			string path = saveDir + saveName + ".save";
 
-			var file = File.Create(fullPath);
+			var file = File.Create(path);
 
 			formatter.Serialize(file, saveData);
 
@@ -47,13 +43,16 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		}
 
 
-		public static object Load(string saveName)
+		public static object Load(string path)
 		{
+			if (!File.Exists(path))
+			{
+				return null;
+			}
+
 			var formatter = GetBinaryFormatter();
 
-			fullPath = saveDir + saveName + saveExtension;
-
-			var file = File.Open(saveName, FileMode.Open);
+			var file = File.Open(path, FileMode.Open);
 
 			try
 			{
@@ -63,7 +62,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			}
 			catch
 			{
-				Debug.LogErrorFormat("Failed to load file {0}", saveName);
+				Debug.LogErrorFormat("Failed to load file {0}", path);
 				file.Close();
 				return null;
 			}

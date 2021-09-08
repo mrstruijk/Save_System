@@ -13,7 +13,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		private void OnEnable()
 		{
-			GameEvents.current.onLoadEvent += DestroyMe;
+
 		}
 
 
@@ -25,6 +25,8 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				toyData.toyType = toyType;
 				SaveData.current.AddToToyList(toyData);
 			}
+
+			GameEvents.current.onLoadEvent += DestroyMe;
 		}
 
 

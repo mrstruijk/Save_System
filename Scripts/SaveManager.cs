@@ -25,7 +25,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		private void Awake()
 		{
 			toyManager = FindObjectOfType<ToyManager>();
-			GetSaveFiles();
+			GetLoadFiles();
 		}
 
 
@@ -42,14 +42,22 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		}
 
 
-		private void GetSaveFiles()
+		private void GetLoadFiles()
 		{
+			if (!Directory.Exists(SerializationManager.saveDir))
+			{
+				Directory.CreateDirectory(SerializationManager.saveDir);
+			}
+
 			saveFiles = Directory.GetFiles(SerializationManager.saveDir);
+			//saveFiles = (string[]) Directory.GetFiles(SerializationManager.saveDir).Where(ext => !ext.EndsWith(".meta"));
 		}
 
 
 		private void ShowLoadScreen()
 		{
+			GetLoadFiles();
+
 			for (int i = 0; i < saveFiles.Length; i++)
 			{
 				var buttonObject = Instantiate(loadButtonPrefab);
@@ -62,7 +70,8 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 					toyManager.OnLoad(saveFiles[index]);
 				});
 
-				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(".save", "");
+				// buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(".save", "");
+				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "");
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -16,11 +17,21 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		public static SaveData current
 		{
-			get => _current ??= new SaveData();
-			set => _current = value;
+			get
+			{
+				if (_current == null)
+				{
+					_current = new SaveData();
+				}
+
+				return _current;
+			}
+			set
+			{
+				_current = value;
+			}
 		}
 
-		private PlayerProfile profile;
 		public List<ToyData> toys = new List<ToyData>();
 
 
