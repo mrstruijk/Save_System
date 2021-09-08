@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1745485743399487191}
   - component: {fileID: 1745485743399487192}
-  - component: {fileID: 1745485743399487193}
   m_Layer: 0
   m_Name: SaveTest
   m_TagString: Untagged
@@ -48,24 +47,9 @@ MonoBehaviour:
   saveNameInput: {fileID: 1745485744717788873}
   loadButtonPrefab: {fileID: 1704962060510353645, guid: 4e75a9d48ca0c4cfa86ed42a73670874,
     type: 3}
-  loadArea: {fileID: 1745485744062180323}
-  saveFiles: []
---- !u!114 &1745485743399487193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1745485743399487194}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6596f14a6643a45009d8ad1d972b374b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefabs:
-  - {fileID: 8485792776736378436, guid: 93e9b068a3ab94c23b6221ecc4146241, type: 3}
-  - {fileID: 5742921162565637106, guid: 4b202c43d738e44bf9a78afa5887e82f, type: 3}
-  - {fileID: 7964033003741892089, guid: 646086f0dbf3248dc9de8432c364287e, type: 3}
+  buttonArea: {fileID: 0}
+  objectsToLoadManager: {fileID: 11400000, guid: ae4941914931646988bf2c66bde26d59,
+    type: 2}
 --- !u!1 &1745485743818147451
 GameObject:
   m_ObjectHideFlags: 0

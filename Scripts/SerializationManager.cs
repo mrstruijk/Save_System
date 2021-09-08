@@ -14,7 +14,8 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	public class SerializationManager
 	{
 		public static readonly string saveDir = Application.persistentDataPath + "/saves/";
-		public static readonly string saveExtention = ".save";
+		public const string saveExtention = ".save";
+
 
 		public static bool Save(string saveName, object saveData)
 		{
@@ -25,9 +26,9 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				Directory.CreateDirectory(saveDir);
 			}
 
-			string path = saveDir + saveName + saveExtention;
+			string fullPath = saveDir + saveName + saveExtention;
 
-			var file = File.Create(path);
+			var file = File.Create(fullPath);
 
 			formatter.Serialize(file, saveData);
 
@@ -47,7 +48,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 			var formatter = GetBinaryFormatter();
 
-			var file = File.Open(fileName, FileMode.Open);
+			var file = File.Open(fileName, FileMode.Open); // Does not require the fullPath for some reason.
 
 			try
 			{
@@ -61,7 +62,6 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				file.Close();
 				return null;
 			}
-
 		}
 
 

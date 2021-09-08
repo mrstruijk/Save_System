@@ -6,7 +6,8 @@ using Random = UnityEngine.Random;
 
 namespace _mrstruijk.Components.SaveSystem.Scripts
 {
-	public class ObjectsToLoadManager : MonoBehaviour
+	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/ObjectsToLoadManager", fileName = "ObjectsToLoadManager")]
+	public class ObjectsToLoadManagerSO : ScriptableObject
 	{
 		public List<GameObject> prefabs;
 

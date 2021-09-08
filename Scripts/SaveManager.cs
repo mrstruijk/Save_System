@@ -13,16 +13,15 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	{
 		public TMP_InputField saveNameInput;
 		public GameObject loadButtonPrefab;
-		public Transform loadArea;
-		public List<string> saveFiles;
+		public Transform buttonArea;
+		public ObjectsToLoadManagerSO objectsToLoadManager;
 
-		private ObjectsToLoadManager objectsToLoadManager;
+		private readonly List<string> saveFiles = new List<string>();
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
 
 		private void Awake()
 		{
-			objectsToLoadManager = FindObjectOfType<ObjectsToLoadManager>();
 			SaveData.current = new SaveData();
 			GetLoadFiles();
 		}
@@ -40,6 +39,12 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			foreach (var handler in objectHandlers)
 			{
 				handler.SavePositionAndRotation();
+			}
+
+			if (string.IsNullOrEmpty(saveNameInput.text))
+			{
+				Debug.LogError("Cannot save without a savename");
+				return;
 			}
 
 			var success = SerializationManager.Save(saveNameInput.text, SaveData.current);
@@ -63,7 +68,10 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 			foreach (var file in files)
 			{
-				saveFiles.Add(file);
+				if (!saveFiles.Contains(file))
+				{
+					saveFiles.Add(file);
+				}
 			}
 		}
 
@@ -74,7 +82,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 			for (int i = 0; i < saveFiles.Count; i++)
 			{
-				var button = Instantiate(loadButtonPrefab, loadArea.transform, false);
+				var button = Instantiate(loadButtonPrefab, buttonArea.transform, false);
 
 				var index = i;
 
