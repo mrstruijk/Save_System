@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using UnityEngine;
-
+using Random = UnityEngine.Random;
 
 
 namespace _mrstruijk.Components.SaveSystem.Scripts
@@ -37,7 +37,15 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		}
 
 
-		[Button]
+		private void Update()
+		{
+			if (Input.GetKeyDown(KeyCode.A))
+			{
+				SpawnRandom();
+			}
+		}
+
+
 		private void SpawnRandom()
 		{
 			Instantiate(toys[Random.Range(0, toys.Count)]);
