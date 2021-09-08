@@ -37,7 +37,6 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		public void AddToObjectList(ObjectData objectsData)
 		{
 			this.objectsData.Add(objectsData);
-			Debug.Log("Added " + objectsData.objectType + " to list." + " List count == " + this.objectsData.Count);
 		}
 	}
 }

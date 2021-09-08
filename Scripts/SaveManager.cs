@@ -49,14 +49,14 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		private void GetLoadFiles()
 		{
-			if (!Directory.Exists(Application.persistentDataPath + "/saves/"))
+			if (!Directory.Exists(SerializationManager.saveDir))
 			{
-				Directory.CreateDirectory(Application.persistentDataPath + "/saves/");
-				Debug.Log("Had to create path: " + Application.persistentDataPath + "/saves/");
+				Directory.CreateDirectory(SerializationManager.saveDir);
+				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
 			}
 
 			string[] ext = {".meta", ".DS_Store"};
-			var files = Directory.GetFiles(Application.persistentDataPath + "/saves/").Where(file => !ext.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+			var files = Directory.GetFiles(SerializationManager.saveDir).Where(file => !ext.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
 
 			foreach (var file in files)
 			{
@@ -82,7 +82,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				});
 
 				// buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(".save", "");
-				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(Application.persistentDataPath + "/saves/", "");
+				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "");
 			}
 		}
 	}

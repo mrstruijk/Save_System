@@ -15,7 +15,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	{
 		// public static Action onLoadEvent;
 
-		// public static string saveDir = Application.persistentDataPath + "/saves/";
+		public static string saveDir = Application.persistentDataPath + "/saves/";
 
 
 
@@ -23,12 +23,12 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		{
 			var formatter = GetBinaryFormatter();
 
-			if (!Directory.Exists(Application.persistentDataPath + "/saves/"))
+			if (!Directory.Exists(saveDir))
 			{
-				Directory.CreateDirectory(Application.persistentDataPath + "/saves/");
+				Directory.CreateDirectory(saveDir);
 			}
 
-			string path = Application.persistentDataPath + "/saves/" + saveName + ".save";
+			string path = saveDir + saveName + ".save";
 
 			var file = File.Create(path);
 
