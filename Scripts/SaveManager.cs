@@ -11,7 +11,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		public TMP_InputField saveNameInput;
 		public GameObject loadButtonPrefab;
 		public Transform loadArea;
-		private ToyManager toyManager;
+		private ObjectsToLoadManager objectsToLoadManager;
 		public string[] saveFiles;
 
 
@@ -19,7 +19,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		private void Awake()
 		{
-			toyManager = FindObjectOfType<ToyManager>();
+			objectsToLoadManager = FindObjectOfType<ObjectsToLoadManager>();
 			SaveData.current = new SaveData();
 			GetLoadFiles();
 		}
@@ -47,11 +47,6 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			}
 
 			saveFiles = Directory.GetFiles(Application.persistentDataPath + "/saves/");
-
-			foreach (var file in saveFiles)
-			{
-				Debug.Log("Loaded file: " + file);
-			}
 			//saveFiles = (string[]) Directory.GetFiles(SerializationManager.saveDir).Where(ext => !ext.EndsWith(".meta"));
 		}
 
@@ -69,7 +64,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 				buttonObject.GetComponent<Button>().onClick.AddListener(() =>
 				{
-					toyManager.OnLoad(saveFiles[index]);
+					objectsToLoadManager.OnLoad(saveFiles[index]);
 				});
 
 				// buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(".save", "");

@@ -31,13 +31,13 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			}
 		}
 
-		public List<ToyData> toys = new List<ToyData>();
+		public List<ObjectData> objectsData = new List<ObjectData>();
 
 
-		public void AddToToyList(ToyData toyData)
+		public void AddToObjectList(ObjectData objectsData)
 		{
-			toys.Add(toyData);
-			Debug.Log("Added " + toyData.toyType + " to list." + " List count == " + toys.Count);
+			this.objectsData.Add(objectsData);
+			Debug.Log("Added " + objectsData.objectType + " to list." + " List count == " + this.objectsData.Count);
 		}
 	}
 }

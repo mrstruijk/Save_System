@@ -4,36 +4,31 @@ using Random = UnityEngine.Random;
 
 namespace _mrstruijk.Components.SaveSystem.Scripts
 {
-	public class ToyHandler : MonoBehaviour
+	public class ObjectHandler : MonoBehaviour
 	{
-		//public ToyType toyType;
-		public ToyData toyData;
+		public ObjectData objectData;
 
 
 		private void OnEnable()
 		{
-
+			GameEvents.current.onLoadEvent += DestroyMe;
 		}
 
 
 		private void Start()
 		{
-			if (string.IsNullOrEmpty(toyData.id))
+			if (string.IsNullOrEmpty(objectData.id))
 			{
-				toyData.id = Random.Range(0, 10000).ToString();
-				//toyData.toyType = toyType;
-				SaveData.current.AddToToyList(toyData);
+				objectData.id = Random.Range(0, 10000).ToString();
+				SaveData.current.AddToObjectList(objectData);
 			}
-
-			GameEvents.current.onLoadEvent += DestroyMe;
 		}
-
 
 
 		private void Update()
 		{
-			toyData.position = transform.position;
-			toyData.rotation = transform.rotation;
+			objectData.position = transform.position;
+			objectData.rotation = transform.rotation;
 		}
 
 

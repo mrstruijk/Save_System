@@ -4,7 +4,7 @@ using UnityEngine;
 namespace _mrstruijk.Components.SaveSystem.Scripts
 {
 	[System.Serializable]
-	public enum ToyType
+	public enum ObjectType
 	{
 		Cube,
 		Sphere,
@@ -13,10 +13,10 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 
 	[System.Serializable]
-	public class ToyData
+	public class ObjectData
 	{
 		public string id;
-		public ToyType toyType;
+		public ObjectType objectType;
 		public Vector3 position;
 		public Quaternion rotation;
 	}

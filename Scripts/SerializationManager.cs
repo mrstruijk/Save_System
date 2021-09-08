@@ -44,15 +44,13 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		{
 			if (!File.Exists(path))
 			{
-				Debug.Log("Path: " +path+ " does not exist!");
+				Debug.LogErrorFormat("File at path: {0} does not exist!", path);
 				return null;
 			}
 
 			var formatter = GetBinaryFormatter();
 
 			var file = File.Open(path, FileMode.Open);
-
-			Debug.Log("Opened file: " + file.Name + ", at path: " + path);
 
 			try
 			{

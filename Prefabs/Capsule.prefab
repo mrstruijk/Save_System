@@ -108,13 +108,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8485792776736378436}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a2e684a80b24243aea6b09e21a8b15e, type: 3}
+  m_Script: {fileID: 11500000, guid: c579eb1f69663479a841924a87c93548, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toyType: 2
-  toyData:
+  objectData:
     id: 
-    toyType: 2
+    objectType: 2
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!54 &8668465344280452026
