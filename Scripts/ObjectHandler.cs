@@ -25,7 +25,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		}
 
 
-		private void Update()
+		public void SavePositionAndRotation()
 		{
 			objectData.position = transform.position;
 			objectData.rotation = transform.rotation;

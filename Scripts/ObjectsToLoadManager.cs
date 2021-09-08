@@ -15,19 +15,13 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		public void OnLoad(string saveFile)
 		{
-			Debug.Log("Loading object");
-
 			GameEvents.current.onLoadEvent?.Invoke();
 
 			SaveData.current = (SaveData) SerializationManager.Load(saveFile);
 
-			Debug.Log("ToyCount in save: " + saveFile + " = " + SaveData.current.objectsData.Count);
-
 			for (int i = 0; i < SaveData.current.objectsData.Count; i++)
 			{
 				var currentToy = SaveData.current.objectsData[i];
-
-				Debug.Log(currentToy.objectType + " is being added");
 
 				GameObject obj = null;
 				foreach (var prefab in prefabs)

@@ -33,6 +33,12 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		public void OnSave()
 		{
+			var objectHandlers = FindObjectsOfType<ObjectHandler>();
+			foreach (var handler in objectHandlers)
+			{
+				handler.SavePositionAndRotation();
+			}
+
 			SerializationManager.Save(saveNameInput.text, SaveData.current);
 			Debug.Log("Saved");
 		}
