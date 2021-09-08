@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,12 +11,6 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	public class ToyManager : MonoBehaviour
 	{
 		public List<GameObject> toys;
-
-
-		public void OnSave(string saveFile)
-		{
-			SerializationManager.Save(saveFile, SaveData.current);
-		}
 
 
 		public void OnLoad(string saveFile)
@@ -34,7 +29,21 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 				Debug.Log(currentToy.toyType + " is being added");
 
-				var obj = Instantiate(toys[(int) currentToy.toyType]);
+				GameObject obj = null;
+				foreach (var toy in toys)
+				{
+					if (toy.GetComponent<ToyHandler>().toyData.toyType == currentToy.toyType)
+					{
+						obj = Instantiate(toy);
+						break;
+					}
+				}
+
+				if (obj == null)
+				{
+					Debug.LogError("Could not locate: " + currentToy.toyType + " in list");
+					return;
+				}
 
 				Debug.Log(obj.name);
 
@@ -43,19 +52,9 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 				toyHandler.transform.position = currentToy.position;
 				toyHandler.transform.rotation = currentToy.rotation;
-
-
 			}
 		}
 
-
-		private void Update()
-		{
-			if (Input.GetKeyDown(KeyCode.A))
-			{
-				SpawnRandom();
-			}
-		}
 
 		[Button]
 		private void SpawnRandom()
