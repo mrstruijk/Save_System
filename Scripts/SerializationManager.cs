@@ -16,12 +16,14 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 	/// </summary>
 	public class SerializationManager
 	{
-		public static Action onLoadEvent;
+		// public static Action onLoadEvent;
 
 
-		public static string saveDir = Application.dataPath + "/_mrstruijk/Components/SaveSystem/saves/";
+		public static string saveDir = Application.dataPath + "/_mrstruijk/Components/_Packages/Save_System/saves/";
 		public static string saveName;
 		public static string saveExtension = ".save";
+
+		private static string fullPath;
 
 		public static bool Save(string saveName, object saveData)
 		{
@@ -32,7 +34,10 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				Directory.CreateDirectory(saveDir);
 
 			}
-			var file = File.Create(saveDir + saveName + saveExtension);
+
+			fullPath = saveDir + saveName + saveExtension;
+
+			var file = File.Create(fullPath);
 
 			formatter.Serialize(file, saveData);
 
@@ -46,7 +51,9 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		{
 			var formatter = GetBinaryFormatter();
 
-			var file = File.Open(saveDir + saveName + saveExtension, FileMode.Open);
+			fullPath = saveDir + saveName + saveExtension;
+
+			var file = File.Open(saveName, FileMode.Open);
 
 			try
 			{
@@ -56,12 +63,11 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			}
 			catch
 			{
-				Debug.LogErrorFormat("Failed to load file {0}", saveDir + saveName + saveExtension);
+				Debug.LogErrorFormat("Failed to load file {0}", saveName);
 				file.Close();
 				return null;
 			}
 
-			onLoadEvent?.Invoke();
 		}
 
 

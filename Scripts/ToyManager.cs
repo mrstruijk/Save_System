@@ -23,7 +23,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 			GameEvents.current.onLoadEvent?.Invoke();
 
-			SaveData.current = (SaveData) SerializationManager.Load(SerializationManager.saveDir + saveName + SerializationManager.saveExtension);
+			SaveData.current = (SaveData) SerializationManager.Load(saveName);
 
 			for (int i = 0; i < SaveData.current.toys.Count; i++)
 			{
