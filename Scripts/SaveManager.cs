@@ -20,6 +20,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		private void Awake()
 		{
 			toyManager = FindObjectOfType<ToyManager>();
+			SaveData.current = new SaveData();
 			GetLoadFiles();
 		}
 
@@ -39,12 +40,18 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		private void GetLoadFiles()
 		{
-			if (!Directory.Exists(SerializationManager.saveDir))
+			if (!Directory.Exists(Application.persistentDataPath + "/saves/"))
 			{
-				Directory.CreateDirectory(SerializationManager.saveDir);
+				Directory.CreateDirectory(Application.persistentDataPath + "/saves/");
+				Debug.Log("Had to create path: " + Application.persistentDataPath + "/saves/");
 			}
 
-			saveFiles = Directory.GetFiles(SerializationManager.saveDir);
+			saveFiles = Directory.GetFiles(Application.persistentDataPath + "/saves/");
+
+			foreach (var file in saveFiles)
+			{
+				Debug.Log("Loaded file: " + file);
+			}
 			//saveFiles = (string[]) Directory.GetFiles(SerializationManager.saveDir).Where(ext => !ext.EndsWith(".meta"));
 		}
 
@@ -66,7 +73,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				});
 
 				// buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(".save", "");
-				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(SerializationManager.saveDir, "");
+				buttonObject.GetComponentInChildren<TextMeshProUGUI>().text = saveFiles[index].Replace(Application.persistentDataPath + "/saves/", "");
 			}
 		}
 	}

@@ -113,7 +113,7 @@ MonoBehaviour:
   toyType: 1
   toyData:
     id: 
-    toyType: 0
+    toyType: 1
     position: {x: 0, y: 0, z: 0}
     rotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!54 &2092315443049496732

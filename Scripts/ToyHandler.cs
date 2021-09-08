@@ -6,7 +6,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 {
 	public class ToyHandler : MonoBehaviour
 	{
-		public ToyType toyType;
+		//public ToyType toyType;
 		public ToyData toyData;
 
 
@@ -21,7 +21,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 			if (string.IsNullOrEmpty(toyData.id))
 			{
 				toyData.id = Random.Range(0, 10000).ToString();
-				toyData.toyType = toyType;
+				//toyData.toyType = toyType;
 				SaveData.current.AddToToyList(toyData);
 			}
 

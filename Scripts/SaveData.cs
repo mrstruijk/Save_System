@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 
 namespace _mrstruijk.Components.SaveSystem.Scripts
@@ -36,6 +37,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		public void AddToToyList(ToyData toyData)
 		{
 			toys.Add(toyData);
+			Debug.Log("Added " + toyData.toyType + " to list." + " List count == " + toys.Count);
 		}
 	}
 }
