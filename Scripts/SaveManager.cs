@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,7 +15,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		public GameObject loadButtonPrefab;
 		public Transform loadArea;
 		private ObjectsToLoadManager objectsToLoadManager;
-		public string[] saveFiles;
+		public List<string> saveFiles;
 
 
 
@@ -52,8 +55,13 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				Debug.Log("Had to create path: " + Application.persistentDataPath + "/saves/");
 			}
 
-			saveFiles = Directory.GetFiles(Application.persistentDataPath + "/saves/");
-			//saveFiles = (string[]) Directory.GetFiles(SerializationManager.saveDir).Where(ext => !ext.EndsWith(".meta"));
+			string[] ext = {".meta", ".DS_Store"};
+			var files = Directory.GetFiles(Application.persistentDataPath + "/saves/").Where(file => !ext.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+
+			foreach (var file in files)
+			{
+				saveFiles.Add(file);
+			}
 		}
 
 
@@ -61,7 +69,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		{
 			GetLoadFiles();
 
-			for (int i = 0; i < saveFiles.Length; i++)
+			for (int i = 0; i < saveFiles.Count; i++)
 			{
 				var buttonObject = Instantiate(loadButtonPrefab);
 				buttonObject.transform.SetParent(loadArea.transform, false);
