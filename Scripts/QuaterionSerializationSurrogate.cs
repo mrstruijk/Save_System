@@ -1,8 +1,7 @@
 using System.Runtime.Serialization;
 using UnityEngine;
 
-
-namespace _mrstruijk.Components.SaveSystem.Scripts
+namespace _mrstruijk.SaveSystem
 {
 	public class QuaterionSerializationSurrogate : ISerializationSurrogate
 	{

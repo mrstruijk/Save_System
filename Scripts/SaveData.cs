@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 
-namespace _mrstruijk.Components.SaveSystem.Scripts
+namespace _mrstruijk.SaveSystem
 {
 	/// <summary>
 	/// All files that need to be Saved, need the [System.Serializable] attribute

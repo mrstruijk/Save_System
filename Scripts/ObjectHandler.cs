@@ -3,7 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace _mrstruijk.Components.SaveSystem.Scripts
+namespace _mrstruijk.SaveSystem
 {
 	public class ObjectHandler : MonoBehaviour
 	{

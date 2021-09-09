@@ -2,52 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 
-namespace _mrstruijk.Components.SaveSystem.Scripts
+namespace _mrstruijk.SaveSystem
 {
-	public class SaveManager : MonoBehaviour
+	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/SaveManager", fileName = "SaveManager")]
+	public class SaveManager : ScriptableObject
 	{
-		public TMP_InputField saveNameInput;
-		public GameObject loadButtonPrefab;
-		public Transform buttonArea;
 		public ObjectsToLoadManagerSO objectsToLoadManager;
 
-		private readonly List<string> saveFiles = new List<string>();
+		public readonly List<string> saveFiles = new List<string>();
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
 
-		private void Awake()
+		public void OnSave(string saveName)
 		{
 			SaveData.current = new SaveData();
 			GetLoadFiles();
-		}
 
-
-		private void Start()
-		{
-			ShowLoadScreen();
-		}
-
-
-		public void OnSave()
-		{
 			var objectHandlers = FindObjectsOfType<ObjectHandler>();
 			foreach (var handler in objectHandlers)
 			{
 				handler.SavePositionAndRotation();
 			}
 
-			if (string.IsNullOrEmpty(saveNameInput.text))
-			{
-				Debug.LogError("Cannot save without a savename");
-				return;
-			}
-
-			var success = SerializationManager.Save(saveNameInput.text, SaveData.current);
+			var success = SerializationManager.Save(saveName, SaveData.current);
 
 			if (!success)
 			{
@@ -56,7 +36,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 		}
 
 
-		private void GetLoadFiles()
+		public void GetLoadFiles()
 		{
 			if (!Directory.Exists(SerializationManager.saveDir))
 			{
@@ -72,27 +52,6 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 				{
 					saveFiles.Add(file);
 				}
-			}
-		}
-
-
-		private void ShowLoadScreen()
-		{
-			GetLoadFiles();
-
-			for (int i = 0; i < saveFiles.Count; i++)
-			{
-				var button = Instantiate(loadButtonPrefab, buttonArea.transform, false);
-
-				var index = i;
-
-				button.GetComponent<Button>().onClick.AddListener(() =>
-				{
-					objectsToLoadManager.OnLoad(saveFiles[index]);
-				});
-
-				var buttonText = saveFiles[index].Replace(SerializationManager.saveDir, "").Replace(SerializationManager.saveExtention, "");
-				button.GetComponentInChildren<TextMeshProUGUI>().text = buttonText;
 			}
 		}
 	}

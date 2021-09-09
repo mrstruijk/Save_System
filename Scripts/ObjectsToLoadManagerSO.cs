@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-namespace _mrstruijk.Components.SaveSystem.Scripts
+namespace _mrstruijk.SaveSystem
 {
 	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/ObjectsToLoadManager", fileName = "ObjectsToLoadManager")]
 	public class ObjectsToLoadManagerSO : ScriptableObject

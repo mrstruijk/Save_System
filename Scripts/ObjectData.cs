@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace _mrstruijk.Components.SaveSystem.Scripts
+namespace _mrstruijk.SaveSystem
 {
 	[System.Serializable]
 	public enum ObjectType
