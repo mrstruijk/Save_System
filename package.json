@@ -6,7 +6,8 @@
   "documentationUrl": "https://youtu.be/5roZtuqZyuw",
   "unity": "2021.1",
   "dependencies": {
-    "com.unity.textmeshpro": "3.0.6"
+    "com.unity.textmeshpro": "3.0.6",
+    "com.mrstruijk.events": "https://github.com/mrstruijk/Events"
   },
   "author":
   {
