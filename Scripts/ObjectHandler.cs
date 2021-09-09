@@ -1,3 +1,4 @@
+using _mrstruijk.Events;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,7 +12,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		private void OnEnable()
 		{
-			GameEvents.current.onLoadEvent += DestroyMe;
+			EventSystem.OnLoadAction += DestroyMe;
 		}
 
 
@@ -35,14 +36,13 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		private void DestroyMe()
 		{
-			GameEvents.current.onLoadEvent -= DestroyMe;
 			Destroy(gameObject);
 		}
 
 
 		private void OnDisable()
 		{
-			GameEvents.current.onLoadEvent -= DestroyMe;
+			EventSystem.OnLoadAction -= DestroyMe;
 		}
 	}
 }

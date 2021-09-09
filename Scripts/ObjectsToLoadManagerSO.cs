@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using _mrstruijk.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -14,7 +15,7 @@ namespace _mrstruijk.Components.SaveSystem.Scripts
 
 		public void OnLoad(string saveFile)
 		{
-			GameEvents.current.onLoadEvent?.Invoke();
+			EventSystem.Invoke(EventSystem.OnLoadAction);
 
 			SaveData.current = (SaveData) SerializationManager.Load(saveFile);
 
