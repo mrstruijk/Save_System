@@ -1,3 +1,16 @@
-﻿fileFormatVersion: 2
+fileFormatVersion: 2
 guid: fc48c373f765454aaaab60b9c2c94b9a
-timeCreated: 1631198701
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - saveManager: {fileID: 11400000, guid: 976226dcdee764313914265d6bbdb71b, type: 2}
+  - saveNameInput: {instanceID: 0}
+  - loadButtonPrefab: {fileID: 7582269804670822261, guid: 24289842a59f44accb8f4244b5dea2ee,
+      type: 3}
+  - buttonArea: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

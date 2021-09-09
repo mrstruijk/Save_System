@@ -16,11 +16,8 @@ namespace _mrstruijk.SaveSystem
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
 
-		public void OnSave(string saveName)
+		public bool OnSave(string saveName)
 		{
-			SaveData.current = new SaveData();
-			GetLoadFiles();
-
 			var objectHandlers = FindObjectsOfType<ObjectHandler>();
 			foreach (var handler in objectHandlers)
 			{
@@ -33,6 +30,8 @@ namespace _mrstruijk.SaveSystem
 			{
 				Debug.LogError("Saving was not succesfull!");
 			}
+
+			return success;
 		}
 
 

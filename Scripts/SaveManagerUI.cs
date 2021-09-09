@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,13 @@ namespace _mrstruijk.SaveSystem
 		public TMP_InputField saveNameInput;
 		public GameObject loadButtonPrefab;
 		public Transform buttonArea;
+
+
+		private void Awake()
+		{
+			SaveData.current = new SaveData();
+			saveManager.GetLoadFiles();
+		}
 
 
 		private void Start()
@@ -49,7 +57,23 @@ namespace _mrstruijk.SaveSystem
 				return;
 			}
 
-			saveManager.OnSave(saveNameInput.text);
+			bool success = saveManager.OnSave(saveNameInput.text);
+
+			if (success == true)
+			{
+				DeleteLoadButtons();
+
+				CreateLoadButtons();
+			}
+		}
+
+
+		private void DeleteLoadButtons()
+		{
+			foreach (Transform button in buttonArea)
+			{
+				Destroy(button.gameObject);
+			}
 		}
 	}
 }
