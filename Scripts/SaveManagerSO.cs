@@ -2,29 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using _mrstruijk.Events;
 using UnityEngine;
+
 
 
 namespace _mrstruijk.SaveSystem
 {
 	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/SaveManager", fileName = "SaveManager")]
-	public class SaveManager : ScriptableObject
+	public class SaveManagerSO : ScriptableObject
 	{
-		public ObjectsToLoadManagerSO objectsToLoadManager;
+		private List<string> saveFiles = new List<string>();
 
-		public readonly List<string> saveFiles = new List<string>();
+		public List<string> SaveFiles
+		{
+			get => saveFiles;
+		}
+
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
-
+		/// <summary>
+		/// Called from UI
+		/// </summary>
+		/// <param name="saveName"></param>
+		/// <returns></returns>
 		public bool OnSave(string saveName)
 		{
-			var objectHandlers = FindObjectsOfType<ObjectHandler>();
-			foreach (var handler in objectHandlers)
-			{
-				handler.SavePositionAndRotation();
-			}
+			EventSystem.OnSaveAction?.Invoke();
 
-			var success = SerializationManager.Save(saveName, SaveData.current);
+			var success = SerializationManager.Save(saveName, Saves.current);
 
 			if (!success)
 			{
