@@ -21,6 +21,7 @@ namespace _mrstruijk.SaveSystem
 			if (string.IsNullOrEmpty(objectData.id))
 			{
 				objectData.id = Random.Range(0, 10000).ToString();
+				objectData.name = this.gameObject.name.Replace("(Clone)", "");
 				SaveData.current.AddToObjectList(objectData);
 			}
 		}

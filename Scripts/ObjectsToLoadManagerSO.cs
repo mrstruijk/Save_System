@@ -26,7 +26,7 @@ namespace _mrstruijk.SaveSystem
 				GameObject obj = null;
 				foreach (var prefab in prefabs)
 				{
-					if (prefab.GetComponent<ObjectHandler>().objectData.objectType == currentObject.objectType)
+					if (prefab.name == currentObject.name)
 					{
 						obj = Instantiate(prefab);
 						break;
@@ -35,7 +35,7 @@ namespace _mrstruijk.SaveSystem
 
 				if (obj == null)
 				{
-					Debug.LogError("Could not locate: " + currentObject.objectType + " in list");
+					Debug.LogError("Could not locate: " + currentObject.name + " in list");
 					return;
 				}
 
