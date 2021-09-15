@@ -13,43 +13,32 @@ namespace _mrstruijk.SaveSystem
 	public class SaveManagerSO : ScriptableObject
 	{
 		private List<string> groups = new List<string>();
+		public List<string> Groups
+		{
+			get => groups;
+		}
+
 		private string currentGroup;
 		public string CurrentGroup
 		{
 			get => currentGroup;
-			set
-			{
-				EventSystem.OnGroupChangeAction?.Invoke();
-				currentGroup = value;
-			}
-		}
-		public List<string> Groups
-		{
-			get => groups;
-			set => groups = value;
+			set => currentGroup = value;
 		}
 
-		private List<string> saveFiles = new List<string>();
-		public List<string> SaveFiles
+		private List<string> currentGroupSaveFiles = new List<string>();
+		public List<string> CurrentGroupSaveFiles
 		{
-			get => saveFiles;
-			set => saveFiles = value;
+			get => currentGroupSaveFiles;
 		}
 
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
 
-		/// <summary>
-		/// Called from UI
-		/// </summary>
-		/// <param name="saveName"></param>
-		/// <returns></returns>
-		public bool OnSave(string currentGroup, string saveName)
+		public bool OnSave(string saveName)
 		{
 			EventSystem.OnSaveAction?.Invoke();
 
-			this.currentGroup = currentGroup;
-			var success = SerializationManager.Save(this.currentGroup, saveName, Saves.current);
+			var success = SerializationManager.Save(currentGroup, saveName, Saves.current);
 
 			if (!success)
 			{
@@ -82,29 +71,36 @@ namespace _mrstruijk.SaveSystem
 
 		public void GetLoadFiles(string currentGroup)
 		{
-			if (!Directory.Exists(SerializationManager.saveDir + currentGroup + "/"))
+			var groupPath = SerializationManager.saveDir + currentGroup + "/";
+
+			if (!Directory.Exists(groupPath))
 			{
-				Directory.CreateDirectory(SerializationManager.saveDir + currentGroup + "/");
-				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir + currentGroup + "/");
+				Directory.CreateDirectory(groupPath);
+				Debug.LogFormat("Had to create path: {0}", groupPath);
 			}
 
-			var files = Directory.GetFiles(SerializationManager.saveDir + currentGroup + "/").Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+			var files = Directory.GetFiles(groupPath).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
 
 			ClearSaveList();
 
 			foreach (var file in files)
 			{
-				if (!saveFiles.Contains(file))
+				if (!currentGroupSaveFiles.Contains(file))
 				{
-					saveFiles.Add(file);
+					currentGroupSaveFiles.Add(file);
 				}
 			}
 		}
 
 
+		public void ClearGroupList()
+		{
+			groups = new List<string>();
+		}
+
 		public void ClearSaveList()
 		{
-			saveFiles = new List<string>();
+			currentGroupSaveFiles = new List<string>();
 		}
 	}
 }

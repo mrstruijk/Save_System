@@ -11,7 +11,7 @@ namespace _mrstruijk.SaveSystem
 	/// From GameDevGuide:
 	/// https://www.youtube.com/watch?v=5roZtuqZyuw
 	/// </summary>
-	public class SerializationManager
+	public static class SerializationManager
 	{
 		public static readonly string saveDir = Application.persistentDataPath + "/saves/";
 		public const string saveExtention = ".save";
