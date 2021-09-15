@@ -12,25 +12,44 @@ namespace _mrstruijk.SaveSystem
 	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/SaveManager", fileName = "SaveManager")]
 	public class SaveManagerSO : ScriptableObject
 	{
-		private List<string> saveFiles = new List<string>();
+		private List<string> groups = new List<string>();
+		private string currentGroup;
+		public string CurrentGroup
+		{
+			get => currentGroup;
+			set
+			{
+				EventSystem.OnGroupChangeAction?.Invoke();
+				currentGroup = value;
+			}
+		}
+		public List<string> Groups
+		{
+			get => groups;
+			set => groups = value;
+		}
 
+		private List<string> saveFiles = new List<string>();
 		public List<string> SaveFiles
 		{
 			get => saveFiles;
+			set => saveFiles = value;
 		}
 
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
+
 
 		/// <summary>
 		/// Called from UI
 		/// </summary>
 		/// <param name="saveName"></param>
 		/// <returns></returns>
-		public bool OnSave(string saveName)
+		public bool OnSave(string currentGroup, string saveName)
 		{
 			EventSystem.OnSaveAction?.Invoke();
 
-			var success = SerializationManager.Save(saveName, Saves.current);
+			this.currentGroup = currentGroup;
+			var success = SerializationManager.Save(this.currentGroup, saveName, Saves.current);
 
 			if (!success)
 			{
@@ -41,7 +60,7 @@ namespace _mrstruijk.SaveSystem
 		}
 
 
-		public void GetLoadFiles()
+		public void GetLoadGroups()
 		{
 			if (!Directory.Exists(SerializationManager.saveDir))
 			{
@@ -49,7 +68,29 @@ namespace _mrstruijk.SaveSystem
 				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
 			}
 
-			var files = Directory.GetFiles(SerializationManager.saveDir).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+			var folders = Directory.GetDirectories(SerializationManager.saveDir);
+
+			foreach (var folder in folders)
+			{
+				if (!groups.Contains(folder))
+				{
+					groups.Add(folder);
+				}
+			}
+		}
+
+
+		public void GetLoadFiles(string currentGroup)
+		{
+			if (!Directory.Exists(SerializationManager.saveDir + currentGroup + "/"))
+			{
+				Directory.CreateDirectory(SerializationManager.saveDir + currentGroup + "/");
+				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir + currentGroup + "/");
+			}
+
+			var files = Directory.GetFiles(SerializationManager.saveDir + currentGroup + "/").Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+
+			ClearSaveList();
 
 			foreach (var file in files)
 			{
@@ -58,6 +99,12 @@ namespace _mrstruijk.SaveSystem
 					saveFiles.Add(file);
 				}
 			}
+		}
+
+
+		public void ClearSaveList()
+		{
+			saveFiles = new List<string>();
 		}
 	}
 }

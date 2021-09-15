@@ -17,7 +17,7 @@ namespace _mrstruijk.SaveSystem
 		public const string saveExtention = ".save";
 
 
-		public static bool Save(string saveName, object saveData)
+		public static bool Save(string currentGroup, string saveName, object saveData)
 		{
 			var formatter = GetBinaryFormatter();
 
@@ -25,8 +25,12 @@ namespace _mrstruijk.SaveSystem
 			{
 				Directory.CreateDirectory(saveDir);
 			}
+			if (!Directory.Exists(saveDir + currentGroup + "/"))
+			{
+				Directory.CreateDirectory(saveDir + currentGroup + "/");
+			}
 
-			string fullPath = saveDir + saveName + saveExtention;
+			string fullPath = saveDir + currentGroup + "/" + saveName + saveExtention;
 
 			var file = File.Create(fullPath);
 
