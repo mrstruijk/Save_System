@@ -10,5 +10,6 @@ namespace _mrstruijk.SaveSystem
 		public string name;
 		public Vector3 position;
 		public Quaternion rotation;
+		public Rigidbody rigidBody;
 	}
 }

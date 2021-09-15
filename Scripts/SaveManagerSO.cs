@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using _mrstruijk.Events;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 
@@ -30,6 +31,14 @@ namespace _mrstruijk.SaveSystem
 		{
 			get => currentGroupSaveFiles;
 		}
+
+		private List<string> allSaveFiles = new List<string>();
+		public List<string> AllSaveFiles
+		{
+			get => allSaveFiles;
+		}
+
+		private IEnumerable<string> all;
 
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
@@ -81,7 +90,7 @@ namespace _mrstruijk.SaveSystem
 
 			var files = Directory.GetFiles(groupPath).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
 
-			ClearSaveList();
+			ClearCurrentSaveList();
 
 			foreach (var file in files)
 			{
@@ -90,6 +99,48 @@ namespace _mrstruijk.SaveSystem
 					currentGroupSaveFiles.Add(file);
 				}
 			}
+
+			GetAllLoadFiles();
+		}
+
+		public void GetAllLoadFiles()
+		{
+
+			if (!Directory.Exists(SerializationManager.saveDir))
+			{
+				Directory.CreateDirectory(SerializationManager.saveDir);
+				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
+			}
+
+			ClearAllSaveList();
+
+			foreach (var group in Directory.GetDirectories(SerializationManager.saveDir))
+			{
+				var files = Directory.GetFiles(group).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+
+
+				foreach (var file in files)
+				{
+					if (!allSaveFiles.Contains(file))
+					{
+						allSaveFiles.Add(file);
+					}
+				}
+			}
+
+		}
+
+		[Button]
+		public void DeleteGroup(string groupName)
+		{
+			SerializationManager.DeleteGroup(groupName);
+			GetLoadGroups();
+		}
+
+		[Button]
+		public void DeleteFile(string groupAndFileName)
+		{
+			SerializationManager.DeleteSaveFile(groupAndFileName);
 		}
 
 
@@ -98,9 +149,14 @@ namespace _mrstruijk.SaveSystem
 			groups = new List<string>();
 		}
 
-		public void ClearSaveList()
+		public void ClearCurrentSaveList()
 		{
 			currentGroupSaveFiles = new List<string>();
+		}
+
+		public void ClearAllSaveList()
+		{
+			allSaveFiles = new List<string>();
 		}
 	}
 }
