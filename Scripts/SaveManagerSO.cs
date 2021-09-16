@@ -66,6 +66,8 @@ namespace _mrstruijk.SaveSystem
 				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
 			}
 
+			ClearGroupList();
+
 			var folders = Directory.GetDirectories(SerializationManager.saveDir);
 
 			foreach (var folder in folders)
@@ -103,9 +105,9 @@ namespace _mrstruijk.SaveSystem
 			GetAllLoadFiles();
 		}
 
+
 		public void GetAllLoadFiles()
 		{
-
 			if (!Directory.Exists(SerializationManager.saveDir))
 			{
 				Directory.CreateDirectory(SerializationManager.saveDir);
@@ -127,17 +129,16 @@ namespace _mrstruijk.SaveSystem
 					}
 				}
 			}
-
 		}
 
-		[Button]
+
 		public void DeleteGroup(string groupName)
 		{
 			SerializationManager.DeleteGroup(groupName);
 			GetLoadGroups();
 		}
 
-		[Button]
+
 		public void DeleteFile(string groupAndFileName)
 		{
 			SerializationManager.DeleteSaveFile(groupAndFileName);

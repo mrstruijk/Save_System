@@ -85,7 +85,7 @@ namespace _mrstruijk.SaveSystem
 
 		public static void DeleteSaveFile(string groupAndFileName)
 		{
-			File.Delete(saveDir + groupAndFileName + saveExtention);
+			File.Delete(groupAndFileName);
 		}
 
 
