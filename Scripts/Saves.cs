@@ -27,7 +27,4 @@ namespace _mrstruijk.SaveSystem
 			saveData.Add(objectData);
 		}
 	}
-
-
 }
-

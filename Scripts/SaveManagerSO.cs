@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using _mrstruijk.Events;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 
@@ -12,25 +13,41 @@ namespace _mrstruijk.SaveSystem
 	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/SaveManager", fileName = "SaveManager")]
 	public class SaveManagerSO : ScriptableObject
 	{
-		private List<string> saveFiles = new List<string>();
-
-		public List<string> SaveFiles
+		private List<string> groups = new List<string>();
+		public List<string> Groups
 		{
-			get => saveFiles;
+			get => groups;
 		}
+
+		private string currentGroup;
+		public string CurrentGroup
+		{
+			get => currentGroup;
+			set => currentGroup = value;
+		}
+
+		private List<string> currentGroupSaveFiles = new List<string>();
+		public List<string> CurrentGroupSaveFiles
+		{
+			get => currentGroupSaveFiles;
+		}
+
+		private List<string> allSaveFiles = new List<string>();
+		public List<string> AllSaveFiles
+		{
+			get => allSaveFiles;
+		}
+
+		private IEnumerable<string> all;
 
 		private readonly string[] excludedExtentions = {".meta", ".DS_Store"};
 
-		/// <summary>
-		/// Called from UI
-		/// </summary>
-		/// <param name="saveName"></param>
-		/// <returns></returns>
+
 		public bool OnSave(string saveName)
 		{
 			EventSystem.OnSaveAction?.Invoke();
 
-			var success = SerializationManager.Save(saveName, Saves.current);
+			var success = SerializationManager.Save(currentGroup, saveName, Saves.current);
 
 			if (!success)
 			{
@@ -41,7 +58,7 @@ namespace _mrstruijk.SaveSystem
 		}
 
 
-		public void GetLoadFiles()
+		public void GetLoadGroups()
 		{
 			if (!Directory.Exists(SerializationManager.saveDir))
 			{
@@ -49,15 +66,98 @@ namespace _mrstruijk.SaveSystem
 				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
 			}
 
-			var files = Directory.GetFiles(SerializationManager.saveDir).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+			ClearGroupList();
+
+			var folders = Directory.GetDirectories(SerializationManager.saveDir);
+
+			foreach (var folder in folders)
+			{
+				if (!groups.Contains(folder))
+				{
+					groups.Add(folder);
+				}
+			}
+		}
+
+
+		public void GetLoadFiles(string currentGroup)
+		{
+			var groupPath = SerializationManager.saveDir + currentGroup + "/";
+
+			if (!Directory.Exists(groupPath))
+			{
+				Directory.CreateDirectory(groupPath);
+				Debug.LogFormat("Had to create path: {0}", groupPath);
+			}
+
+			var files = Directory.GetFiles(groupPath).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+
+			ClearCurrentSaveList();
 
 			foreach (var file in files)
 			{
-				if (!saveFiles.Contains(file))
+				if (!currentGroupSaveFiles.Contains(file))
 				{
-					saveFiles.Add(file);
+					currentGroupSaveFiles.Add(file);
 				}
 			}
+
+			GetAllLoadFiles();
+		}
+
+
+		public void GetAllLoadFiles()
+		{
+			if (!Directory.Exists(SerializationManager.saveDir))
+			{
+				Directory.CreateDirectory(SerializationManager.saveDir);
+				Debug.LogFormat("Had to create path: {0}", SerializationManager.saveDir);
+			}
+
+			ClearAllSaveList();
+
+			foreach (var group in Directory.GetDirectories(SerializationManager.saveDir))
+			{
+				var files = Directory.GetFiles(group).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+
+
+				foreach (var file in files)
+				{
+					if (!allSaveFiles.Contains(file))
+					{
+						allSaveFiles.Add(file);
+					}
+				}
+			}
+		}
+
+
+		public void DeleteGroup(string groupName)
+		{
+			SerializationManager.DeleteGroup(groupName);
+			GetLoadGroups();
+		}
+
+
+		public void DeleteFile(string groupAndFileName)
+		{
+			SerializationManager.DeleteSaveFile(groupAndFileName);
+		}
+
+
+		public void ClearGroupList()
+		{
+			groups = new List<string>();
+		}
+
+		public void ClearCurrentSaveList()
+		{
+			currentGroupSaveFiles = new List<string>();
+		}
+
+		public void ClearAllSaveList()
+		{
+			allSaveFiles = new List<string>();
 		}
 	}
 }

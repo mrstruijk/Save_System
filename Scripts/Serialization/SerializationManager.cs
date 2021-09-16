@@ -1,6 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 
@@ -11,13 +12,13 @@ namespace _mrstruijk.SaveSystem
 	/// From GameDevGuide:
 	/// https://www.youtube.com/watch?v=5roZtuqZyuw
 	/// </summary>
-	public class SerializationManager
+	public static class SerializationManager
 	{
 		public static readonly string saveDir = Application.persistentDataPath + "/saves/";
 		public const string saveExtention = ".save";
 
 
-		public static bool Save(string saveName, object saveData)
+		public static bool Save(string currentGroup, string saveName, object saveData)
 		{
 			var formatter = GetBinaryFormatter();
 
@@ -25,8 +26,12 @@ namespace _mrstruijk.SaveSystem
 			{
 				Directory.CreateDirectory(saveDir);
 			}
+			if (!Directory.Exists(saveDir + currentGroup + "/"))
+			{
+				Directory.CreateDirectory(saveDir + currentGroup + "/");
+			}
 
-			string fullPath = saveDir + saveName + saveExtention;
+			string fullPath = saveDir + currentGroup + "/" + saveName + saveExtention;
 
 			var file = File.Create(fullPath);
 
@@ -62,6 +67,25 @@ namespace _mrstruijk.SaveSystem
 				file.Close();
 				return null;
 			}
+		}
+
+
+		public static void DeleteGroup(string currentGroup)
+		{
+			var files = Directory.GetFiles(saveDir + currentGroup + "/");
+
+			foreach (var file in files)
+			{
+				File.Delete(file);
+			}
+
+			Directory.Delete(saveDir + currentGroup + "/");
+		}
+
+
+		public static void DeleteSaveFile(string groupAndFileName)
+		{
+			File.Delete(groupAndFileName);
 		}
 
 
