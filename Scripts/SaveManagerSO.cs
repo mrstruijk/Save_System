@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using _mrstruijk.Events;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 
@@ -58,7 +57,7 @@ namespace _mrstruijk.SaveSystem
 		}
 
 
-		public void GetLoadGroups()
+		public void GetGroupsList()
 		{
 			if (!Directory.Exists(SerializationManager.saveDir))
 			{
@@ -80,19 +79,18 @@ namespace _mrstruijk.SaveSystem
 		}
 
 
-		public void GetLoadFiles(string currentGroup)
+		public void GetSaveFilesOfGroup(string currentGroup)
 		{
 			var groupPath = SerializationManager.saveDir + currentGroup + "/";
 
 			if (!Directory.Exists(groupPath))
 			{
-				Directory.CreateDirectory(groupPath);
-				Debug.LogFormat("Had to create path: {0}", groupPath);
+				return;
 			}
 
-			var files = Directory.GetFiles(groupPath).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
+			ClearGroupSavesList();
 
-			ClearCurrentSaveList();
+			var files = Directory.GetFiles(groupPath).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
 
 			foreach (var file in files)
 			{
@@ -101,12 +99,10 @@ namespace _mrstruijk.SaveSystem
 					currentGroupSaveFiles.Add(file);
 				}
 			}
-
-			GetAllLoadFiles();
 		}
 
 
-		public void GetAllLoadFiles()
+		public void GetAllSaveFiles()
 		{
 			if (!Directory.Exists(SerializationManager.saveDir))
 			{
@@ -119,7 +115,6 @@ namespace _mrstruijk.SaveSystem
 			foreach (var group in Directory.GetDirectories(SerializationManager.saveDir))
 			{
 				var files = Directory.GetFiles(group).Where(file => !excludedExtentions.Any(x => file.EndsWith(x, StringComparison.Ordinal)));
-
 
 				foreach (var file in files)
 				{
@@ -135,13 +130,14 @@ namespace _mrstruijk.SaveSystem
 		public void DeleteGroup(string groupName)
 		{
 			SerializationManager.DeleteGroup(groupName);
-			GetLoadGroups();
+			GetGroupsList();
 		}
 
 
 		public void DeleteFile(string groupAndFileName)
 		{
 			SerializationManager.DeleteSaveFile(groupAndFileName);
+			GetAllSaveFiles();
 		}
 
 
@@ -150,7 +146,7 @@ namespace _mrstruijk.SaveSystem
 			groups = new List<string>();
 		}
 
-		public void ClearCurrentSaveList()
+		public void ClearGroupSavesList()
 		{
 			currentGroupSaveFiles = new List<string>();
 		}
