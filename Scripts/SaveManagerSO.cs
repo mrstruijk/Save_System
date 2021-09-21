@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using _mrstruijk.Events;
+using mrstruijk.Events;
 using UnityEngine;
 
 
 
-namespace _mrstruijk.SaveSystem
+namespace mrstruijk.SaveSystem
 {
 	[CreateAssetMenu(menuName = "mrstruijk/SaveSystem/SaveManager", fileName = "SaveManager")]
 	public class SaveManagerSO : ScriptableObject

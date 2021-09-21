@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using UnityEngine;
 
 
-namespace _mrstruijk.SaveSystem
+namespace mrstruijk.SaveSystem
 {
 	public class Vector3SerializationSurrogate : ISerializationSurrogate
 	{

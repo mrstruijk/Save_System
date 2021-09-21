@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace _mrstruijk.SaveSystem
+namespace mrstruijk.SaveSystem
 {
 	[System.Serializable]
 	public class SaveData

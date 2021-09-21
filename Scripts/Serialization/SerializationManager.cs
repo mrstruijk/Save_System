@@ -4,7 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 
-namespace _mrstruijk.SaveSystem
+namespace mrstruijk.SaveSystem
 {
 	/// <summary>
 	/// All files that need to be Saved, need the [System.Serializable] attribute
